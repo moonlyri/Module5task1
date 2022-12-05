@@ -9,6 +9,4 @@ public interface IInternalHttpClientService
 {
     Task<TResponse> SendAsync<TResponse, TRequest>(string url, HttpMethod method, TRequest content = null)
         where TRequest : class;
-
-    Task<TResponse> SendListAsync<TResponse, TRequest>(string url, HttpMethod method, List<UserDto> content);
 }

@@ -19,6 +19,7 @@ public class Starter
         var user2 = await _userService.CreateUser("john", "weak", 30);
         var user3 = await _userService.CreateUser("gnom", "strong", 10);
         var users = await _userService.CreateUserList(user1, user2, user3);
-        var delete = await _userService.DeleteUserAsync("id");
+        var delete = await _userService.DeleteUserAsync(23);
+        var update = await _userService.UpdateUserPut("michael", "manager", 2, 23);
     }
 }
