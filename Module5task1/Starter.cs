@@ -6,10 +6,17 @@ namespace Module5task1;
 public class Starter
 {
     private readonly IUserService _userService;
+    private readonly ILoginService _loginService;
+    private readonly IResourceService _resourceService;
 
-    public Starter(IUserService userService)
+    public Starter(
+        IUserService userService,
+        ILoginService loginService,
+        IResourceService resourceService)
     {
         _userService = userService;
+        _loginService = loginService;
+        _resourceService = resourceService;
     }
 
     public async Task Start()
@@ -21,5 +28,9 @@ public class Starter
         var users = await _userService.CreateUserList(user1, user2, user3);
         var delete = await _userService.DeleteUserAsync(23);
         var update = await _userService.UpdateUserPut("michael", "manager", 2, 23);
+        var register = await _loginService.Register("user@gmail.com", 12345);
+        var login = await _loginService.Login("user@gmail.com", 12345);
+        var resourceid = await _resourceService.GetResourceById(2);
+        var resourcepage = await _resourceService.GetResourcePage(3);
     }
 }
