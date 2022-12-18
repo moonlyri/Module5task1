@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -40,15 +39,19 @@ public class ResourceService : IResourceService
         return result?.Data;
     }
 
-    public async Task<IReadOnlyList<ResourceDto>> GetResourcePage(int page)
+    public async Task<ListResponse<ResourceDto>> GetResourcePage(int page)
     {
-        var result = await _httpClientService.SendAsync<List<ResourceDto>, object>(
+        var result = await _httpClientService.SendAsync<ListResponse<ResourceDto>, object>(
             $"{_options.Host}{_sharedResourceApi}{page}",
             HttpMethod.Get);
 
         if (result != null)
         {
             _logger.LogInformation($"Resource page was found!");
+        }
+        else
+        {
+            _logger.LogInformation("Resources with page = {Page} was not found", page);
         }
 
         return result;

@@ -46,7 +46,7 @@ public class UserService : IUserService
         return result?.Data;
     }
 
-    public async Task<UserResponse> CreateUser(string name, string job, int age)
+    public async Task<UserResponse> CreateUser(string name, string job)
     {
         var result = await _httpClientService.SendAsync<UserResponse, UserRequest>(
             $"{_options.Host}{_userApi}",
@@ -54,8 +54,7 @@ public class UserService : IUserService
             new UserRequest()
             {
                 Job = job,
-                Name = name,
-                Age = age
+                Name = name
             });
 
         if (result != null)
@@ -66,19 +65,38 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<UserResponse> CreateUserList(UserResponse user1, UserResponse user2, UserResponse user3)
+    public async Task<ListResponse<UserDto>> CreateUserList(int page)
     {
-        var result = await _httpClientService.SendAsync<UserResponse, UserRequest>(
-            $"{_options.Host}{_userApi}",
-            HttpMethod.Get);
-        _users.Add(result);
+        var result = await _httpClientService.SendAsync<ListResponse<UserDto>, object>(
+            $"{_options.Host}{_userApi}?page={page}", HttpMethod.Get);
 
         if (result != null)
         {
-            _logger.LogInformation("Users with id = {Id} were created", result.Id);
+            _logger.LogInformation("Users with page = {Page} was found", page);
+        }
+        else
+        {
+            _logger.LogInformation("Users with page = {Page} was not found", page);
         }
 
-        return result;
+        return result!;
+    }
+
+    public async Task<ListResponse<UserDto>> GetListUsersDelay(int delay)
+    {
+        var result = await _httpClientService.SendAsync<ListResponse<UserDto>, object>(
+            $"{_options.Host}{_userApi}?delay={delay}", HttpMethod.Get);
+
+        if (result != null)
+        {
+            _logger.LogInformation($"Users was found");
+        }
+        else
+        {
+            _logger.LogInformation($"Users was not found");
+        }
+
+        return result!;
     }
 
     public async Task<bool> DeleteUserAsync(int id)
@@ -94,7 +112,7 @@ public class UserService : IUserService
         return true;
     }
 
-    public async Task<UserResponse> UpdateUserPut(string name, string job, int id, int age)
+    public async Task<UserResponse> UpdateUserPut(string name, string job, int id)
     {
         var result = await _httpClientService.SendAsync<UserResponse, UserRequest>(
             $"{_options.Host}{_userApi}{id}",
@@ -102,8 +120,7 @@ public class UserService : IUserService
             new UserRequest()
             {
                 Job = job,
-                Name = name,
-                Age = age
+                Name = name
             });
 
         if (result != null)

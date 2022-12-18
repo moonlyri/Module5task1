@@ -22,15 +22,19 @@ public class Starter
     public async Task Start()
     {
         var user = await _userService.GetUserById(2);
-        var user1 = await _userService.CreateUser("morpheus", "leader", 32);
-        var user2 = await _userService.CreateUser("john", "weak", 30);
-        var user3 = await _userService.CreateUser("gnom", "strong", 10);
-        var users = await _userService.CreateUserList(user1, user2, user3);
-        var delete = await _userService.DeleteUserAsync(23);
-        var update = await _userService.UpdateUserPut("michael", "manager", 2, 23);
-        var register = await _loginService.Register("user@gmail.com", 12345);
-        var login = await _loginService.Login("user@gmail.com", 12345);
-        var resourceid = await _resourceService.GetResourceById(2);
-        var resourcepage = await _resourceService.GetResourcePage(3);
+        var userNotFound = await _userService.GetUserById(23);
+        var userInfo = await _userService.CreateUser("morpheus", "leader");
+        var users = await _userService.CreateUserList(2);
+        var usersDelay = await _userService.GetListUsersDelay(3);
+        var userUpdate = await _userService.UpdateUserPut("morpheus", "zion resident", 2);
+        var userDelete = await _userService.DeleteUserAsync(2);
+        var resource = await _resourceService.GetResourceById(2);
+        var resourceNotFound = await _resourceService.GetResourceById(23);
+        await _resourceService.GetResourcePage(2);
+        await _resourceService.GetResourcePage(3);
+        var register = await _loginService.Register("eve.holt@reqres.in", "pistol");
+        var registerFailed = await _loginService.Register("eve.holt@reqres.in", string.Empty);
+        var login = await _loginService.Login("eve.holt@reqres.in", "cityslicka");
+        var loginFailed = await _loginService.Login("peter@klaven", string.Empty);
     }
 }

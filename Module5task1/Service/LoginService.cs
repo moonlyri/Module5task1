@@ -26,7 +26,7 @@ public class LoginService : ILoginService
         _options = options.Value;
     }
 
-    public async Task<LoginResponse> Register(string email, int password)
+    public async Task<LoginResponse> Register(string email, string password)
     {
         var result = await _httpClientService.SendAsync<LoginResponse,
             LoginRequest>(
@@ -49,7 +49,7 @@ public class LoginService : ILoginService
         return result;
     }
 
-    public async Task<LoginResponse> Login(string email, int password)
+    public async Task<LoginResponse> Login(string email, string password)
     {
         var result = await _httpClientService.SendAsync<LoginResponse,
             LoginRequest>(

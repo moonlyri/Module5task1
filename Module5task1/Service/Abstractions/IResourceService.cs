@@ -7,5 +7,5 @@ namespace Module5task1.Service.Abstractions;
 public interface IResourceService
 {
     Task<ResourceDto> GetResourceById(int id);
-    Task<IReadOnlyList<ResourceDto>> GetResourcePage(int page);
+    Task<ListResponse<ResourceDto>> GetResourcePage(int page);
 }
